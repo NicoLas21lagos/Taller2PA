@@ -70,14 +70,14 @@ public class Main {
                     case 2 -> usuarioLogeado.verDisponibilidadLibro(biblioteca);
                     case 3 -> usuarioLogeado.renovarPrestamo();
                     case 4 -> usuarioLogeado.devolverLibro(biblioteca);
-                    case 5 -> usuarioLogeado.verHistorialDePrestamos(biblioteca);
+                    case 5 -> usuarioLogeado.verHistorialDePrestamos();
                     case 6 -> usuarioLogeado.buscarLibroPorTitulo(biblioteca);
                     case 7 -> usuarioLogeado.buscarLibroPorAutor(biblioteca);
                     case 8 -> usuarioLogeado.buscarLibroPorCategoria(biblioteca);
-                    case 9 -> usuarioLogeado.buscarLibroPorMejorValoracion(biblioteca);
+                    case 9 ->usuarioLogeado.buscarLibroPorMejorValoracion(biblioteca);
                     case 10 -> usuarioLogeado.buscarLibroPorPeorValoracion(biblioteca);
                     case 11 -> usuarioLogeado.buscarLibroPorValoracion(biblioteca);
-                    case 12 -> System.out.println("FALTA IMPLEMENTAR");
+                    case 12 -> usuarioLogeado.buscarLibrosPorFecha(biblioteca);
 
                     default -> System.out.println("OpciÃ³n invÃ¡lida. Por favor, ingrese una opciÃ³n vÃ¡lida.");
                 }

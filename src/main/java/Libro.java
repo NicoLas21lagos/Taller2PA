@@ -7,41 +7,38 @@ public class Libro {
     private String autor;
     private String categoria;
     private int ejemplaresDisponibles;
+    private String date;
     private List<Integer> calificaciones;
     private List<String> comentarios;
 
-    public Libro(String titulo, String autor, String categoria, int ejemplaresDisponibles) {
+    public Libro(String titulo, String autor, String categoria, int ejemplaresDisponibles, String date, List<Integer> calificaciones, List<String> comentarios) {
         this.titulo = titulo;
         this.autor = autor;
         this.categoria = categoria;
         this.ejemplaresDisponibles = ejemplaresDisponibles;
-    }
-
-    public Libro(String titulo, String autor, String categoria, int ejemplaresDisponibles, List<Integer> calificaciones, List<String> comentarios) {
-        this.titulo = titulo;
-        this.autor = autor;
-        this.categoria = categoria;
-        this.ejemplaresDisponibles = ejemplaresDisponibles;
+        this.date = date;
         this.calificaciones = calificaciones;
         this.comentarios = comentarios;
     }
 
-    public boolean tieneMejorValoracion(double valoracionMinima) {
+    public int obtenerMejorValoracion() {
+        int mejorValoracion = Integer.MIN_VALUE;
         for (Integer calificacion : calificaciones) {
-            if (calificacion >= valoracionMinima) {
-                return true;
+            if (calificacion > mejorValoracion) {
+                mejorValoracion = calificacion;
             }
         }
-        return false;
+        return mejorValoracion;
     }
 
-    public boolean tienePeorValoracion(double valoracionMaxima) {
+    public int obtenerPeorValoracion() {
+        int peorValoracion = Integer.MAX_VALUE;
         for (Integer calificacion : calificaciones) {
-            if (calificacion <= valoracionMaxima) {
-                return true;
+            if (calificacion < peorValoracion) {
+                peorValoracion = calificacion;
             }
         }
-        return false;
+        return peorValoracion;
     }
 
 
@@ -57,14 +54,9 @@ public class Libro {
         return categoria;
     }
 
-
-
-    @Override
-    public String toString() {
-        return "Titulo= " + titulo + " | autor= " + autor + " | Categoria= " + categoria +" | EjemplaresDisponibles= " + ejemplaresDisponibles + " | Calificaciones= " + calificaciones + " | Comentarios= " + comentarios;
+    public String getDate() {
+        return date;
     }
-
-
     public int getEjemplaresDisponibles() {
         return ejemplaresDisponibles;
     }
@@ -79,6 +71,11 @@ public class Libro {
 
     public void setEjemplaresDisponibles(int ejemplaresDisponibles) {
         this.ejemplaresDisponibles = ejemplaresDisponibles;
+    }
+
+    @Override
+    public String toString() {
+        return "Titulo= " + titulo + " | autor= " + autor + " | Categoria= " + categoria +" | EjemplaresDisponibles= " + ejemplaresDisponibles +"| Fecha= "+ date + " | Calificaciones= " + calificaciones + " | Comentarios= " + comentarios;
     }
 
 
