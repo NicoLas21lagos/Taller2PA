@@ -28,50 +28,131 @@ public class Login {
         System.out.println("╠═════════════════════════╣");
 
         System.out.println("║  Ingresar nombre:       ║");
-        nombre = teclado.next();
-
+        nombre = correccionPalabras(teclado.nextLine());
         System.out.println("║  Ingresar contraseña:   ║");
-        contra = teclado.next();
+        contra = teclado.nextLine();
 
+        System.out.println(nombre + " | " + contra);
         System.out.println("╚═════════════════════════╝");
 
-        autenticacion();
     }
 
-    public void autenticacion() {
+    public boolean autenticacion() {
+        iniciarSesion();
+        boolean resultado = false;
         boolean verificarUsuario = usuarios.stream()
                 .anyMatch(x -> x.getNombre().equals(this.nombre) && x.getContraseña().equals(contra));
-
-        if (verificarUsuario) {
-            System.out.println("╔════════════════════════════════════════╗");
-            System.out.println("║        Inicio de Sesión Exitoso        ║");
-            System.out.println("╚════════════════════════════════════════╝");
-        } else {
-            System.out.println("╔══════════════════════════════════════════════╗");
-            System.out.println("║  Nombre de Usuario o Contraseña Incorrectos  ║");
-            System.out.println("║                                              ║");
-            System.out.println("║       ¿Desea Intentarlo de Nuevo?            ║");
-            System.out.println("║     [1] Sí                     [2] No        ║");
-            System.out.println("╚══════════════════════════════════════════════╝");
-        }
         try {
-            int opcion = teclado.nextInt();
+            if (verificarUsuario) {
+                System.out.println("╔════════════════════════════════════════╗");
+                System.out.println("║        Inicio de Sesión Exitoso        ║");
+                System.out.println("╚════════════════════════════════════════╝");
 
-            if (opcion == 1) {
-                iniciarSesion();
+                resultado = true;
+            } else {
+                System.out.println("╔══════════════════════════════════════════════╗");
+                System.out.println("║  Nombre de Usuario o Contraseña Incorrectos  ║");
+                System.out.println("║                                              ║");
+                System.out.println("║        ¿Desea Intentarlo de Nuevo?           ║");
+                System.out.println("║     [1] Sí                     [2] No        ║");
+                System.out.println("╚══════════════════════════════════════════════╝");
+
+                int opcion = Integer.parseInt(teclado.nextLine());
+                if (opcion == 1) {
+                    iniciarSesion();
+                }
             }
-
         } catch (Exception e) {
 
             System.out.println(e.getMessage() + " | Ingrese datos validos");
             teclado.nextLine();
             autenticacion();
         }
+        return resultado;
+    }
+
+    public Usuario buscarUsuarioLogeado(String nombre, String contra){
+        for (Usuario usuario : usuarios){
+            if (usuario.getNombre().equals(nombre) && usuario.getContraseña().equals(contra)){
+                return usuario;
+            }
+        }
+        return null;
+    }
+
+    public String[] registrarUsuario() {
+        System.out.println("╠══════════════════════════════════════╣");
+        System.out.println("║     Ingresar nombre:                 ║");
+        String nombre = correccionPalabras(teclado.nextLine());
+
+        System.out.println("║     Ingresar tipo personal           ║");
+        System.out.println("║     (Estudiante, Profesor o          ║");
+        System.out.println("║     Personal De La Biblioteca)       ║");
+        String tipoPersona = correccionPalabras(teclado.nextLine());
+
+
+        System.out.println("║     Ingresar contraseña:             ║");
+        String contrasena = teclado.nextLine();
+
+        System.out.println("║     Ingresar contraseña nuevamente:  ║");
+        String contrasenaConfirmacion = teclado.nextLine();
+        System.out.println("╚══════════════════════════════════════╝");
+
+        return new String[]{nombre, tipoPersona, contrasena, contrasenaConfirmacion};
+
+
     }
 
 
+    public void validacionRegistroUsuario() {
+
+        try {
+
+            String[] datos = registrarUsuario();
+
+            //validar el tipo de usuario
+            if (!datos[1].equals("Profesor") && !datos[1].equals("Estudiante") && !datos[1].equals("Personal De La Biblioteca")) {
+                System.out.println("Ingrese datos validos");
+                System.out.println("Se encontro [" + datos[1] + "]");
+                registrarUsuario();
+            } else if (!datos[2].equals(datos[3])) {
+                System.out.println("Ingrese datos validos");
+                System.out.println("Se encontro [" + datos[2] + "] distinto a [" + datos[3] + "]");
+                registrarUsuario();
+            }
+
+            usuarios.add(new Usuario(datos[0], datos[1], datos[2]));
+            System.out.println("╔════════════════════════════════════════╗");
+            System.out.println("║       Creacion de cuenta exitosa       ║");
+            System.out.println("╚════════════════════════════════════════╝");
+
+            for (Usuario user : usuarios) {
+                System.out.println(user.toString());
+            }
 
 
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage() + " | Ingresa datos validos");
+            teclado.nextLine();
+            registrarUsuario();
+        }
+    }
+
+    public String correccionPalabras(String texto) {
+        StringBuilder nuevoString = new StringBuilder();
+
+        String[] palabras = texto.toLowerCase().split(" ");
+
+        for (String palabra : palabras) {
+            if (!palabra.isEmpty()) {
+
+                nuevoString.append(Character.toUpperCase(palabra.charAt(0)))
+                        .append(palabra.substring(1)).append(" ");
+            }
+        }
+        return nuevoString.toString().trim();
+    }
 
     public String getNombre() {
         return nombre;

@@ -1,13 +1,108 @@
-
+import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello world!");
+    static Scanner teclado = new Scanner(System.in);
 
+    public static void main(String[] args) {
+        int x = 0;
+        System.out.println("=====================Bienvenido=====================");
         Login login = new Login();
-        login.iniciarSesion();
+        Biblioteca biblioteca = new Biblioteca();
+        Administrador administrador = new Administrador(biblioteca);
+
+        do {
+            try {
+                System.out.println("╔════════════════════════════════════════╗");
+                System.out.println("║           [1] INICIAR SESION           ║");
+                System.out.println("║           [2] CREAR CUENTA             ║");
+                System.out.println("║           [3] ADMINISTRADOR            ║");
+                System.out.println("║           [4] SALIR                    ║");
+                System.out.println("║           ELIJA UNA OPCION             ║");
+                System.out.println("╚════════════════════════════════════════╝");
+                x = validar(4);
+
+                switch (x) {
+                    case 1 -> {
+                        if (login.autenticacion()) {
+                            Usuario usuarioLogeado = login.buscarUsuarioLogeado(login.getNombre(), login.getContra());
+                            menu(usuarioLogeado,biblioteca);
+                        }
+                    }
+                    case 2 -> login.validacionRegistroUsuario();
+                    case 3 -> menu(new Usuario("Admin","","admin123"),biblioteca);
+                }
+            } catch (Exception e) {
+                System.out.println("ERROR vuelva a intentar");
+            }
+
+        } while (x != 4);
+        System.out.println("Finalizando...");
 
     }
+
+    public static void menu(Usuario usuarioLogeado, Biblioteca biblioteca) {
+
+
+        int opcion;
+        do {
+            System.out.println("╔═════════════════════════════════════════╗");
+            System.out.println("║           Menú Principal                ║");
+            System.out.println("╠═════════════════════════════════════════╣");
+            System.out.println("║ [1] Solicitar Préstamo de Libro         ║");
+            System.out.println("║ [2] Ver Disponibilidad del Libro        ║");
+            System.out.println("║ [3] Renovar Préstamo                    ║");
+            System.out.println("║ [4] Devolver Libro                      ║");
+            System.out.println("║ [5] Ver Historial Libros Prestados      ║");
+            System.out.println("║ [6] Buscar Libro por Título             ║");
+            System.out.println("║ [7] Buscar Libro por Autor              ║");
+            System.out.println("║ [8] Buscar Libro por Categoría          ║");
+            System.out.println("║ [9] Buscar Libro por mejor Valoración   ║");
+            System.out.println("║ [10] Buscar Libro por peor Valoración   ║");
+            System.out.println("║ [11] Buscar Libro por mas llevado       ║");
+            System.out.println("║ [12] Buscar Libro por fecha             ║");
+            System.out.println("║ [13] Salir                              ║");
+            System.out.println("╚═════════════════════════════════════════╝");
+
+            System.out.print("Ingrese su opción: ");
+            opcion = teclado.nextInt();
+
+            switch (opcion) {
+                case 1 -> usuarioLogeado.solicitarPrestamoLibro(biblioteca);
+                case 2 -> usuarioLogeado.verDisponibilidadLibro(biblioteca);
+                case 3 -> usuarioLogeado.renovarPrestamo();
+                case 4 -> usuarioLogeado.devolverLibro(biblioteca);
+                case 5 -> usuarioLogeado.verHistorialDePrestamos(biblioteca);
+                case 6 -> usuarioLogeado.buscarLibroPorTitulo(biblioteca);
+                case 7 -> usuarioLogeado.buscarLibroPorAutor(biblioteca);
+                case 8 -> usuarioLogeado.buscarLibroPorCategoria(biblioteca);
+                case 9 -> System.out.println("FALTA IMPLEMENTAR");
+                case 10 -> System.out.println("FALTA IMPLEMENTAR");
+                case 11 -> System.out.println("FALTA IMPLEMENTAR");
+                case 12 -> System.out.println("FALTA IMPLEMENTAR");
+
+                default -> System.out.println("Opción inválida. Por favor, ingrese una opción válida.");
+            }
+        } while (opcion != 13);
+    }
+
+    public static int validar(int x) {
+        int n = -1;
+        do {
+            Scanner teclado = new Scanner(System.in);
+            n = teclado.nextInt();
+            if (n <= 0 || n > x) {
+                System.out.println("ingrese un numero valido");
+            }
+        } while (n <= 0 || n > x);
+        return n;
+    }
+
+
+
+
+
+}
+
 
 /*
 
@@ -54,4 +149,3 @@ sanciones, será bloqueado y eliminado de la biblioteca.
 
 
 */
-}
