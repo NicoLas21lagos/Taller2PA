@@ -1,6 +1,6 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+package org.example;
+
+import java.util.*;
 
 public class Usuario {
     private String nombre;
@@ -44,52 +44,96 @@ public class Usuario {
      */
 
     public Libro buscarLibroPorTitulo(Biblioteca biblioteca){
-        System.out.println("Ingrese el nombre del titulo que desea buscar: ");
-        String tituloLibro = teclado.nextLine();
-        for (Libro libro: biblioteca.getLibros()){
-            if (libro.getTitulo().equals(tituloLibro)){
-                System.out.println(libro);
-                return libro;
+        try {
+            System.out.println("Ingrese el nombre del título que desea buscar: ");
+            String tituloLibro = teclado.nextLine();
+            for (Libro libro: biblioteca.getLibros()){
+                if (libro.getTitulo().equals(tituloLibro)){
+                    System.out.println(libro);
+                    return libro;
+                }
             }
+        } catch (Exception e) {
+            System.out.println("Ocurrió un error al buscar el libro por título: " + e.getMessage());
         }
         return null;
     }
+
     public void buscarLibroPorAutor(Biblioteca biblioteca){
-        System.out.println("Ingrese el nombre del autor que desea buscar: ");
-        String nombreAutor = teclado.nextLine();
-        for (Libro libro: biblioteca.getLibros()){
-            if (libro.getAutor().equals(nombreAutor)){
-                System.out.println(libro);
+        try {
+            System.out.println("Ingrese el nombre del autor que desea buscar: ");
+            String nombreAutor = teclado.nextLine();
+            for (Libro libro : biblioteca.getLibros()) {
+                if (libro.getAutor().equals(nombreAutor)) {
+                    System.out.println(libro);
+                }
             }
+        }catch (Exception e){
+            System.out.println("Ocurrió un error al buscar libros: " + e.getMessage());
         }
     }
     public void buscarLibroPorCategoria(Biblioteca biblioteca){
-        System.out.println("Ingrese el nombre por categoria que desea buscar: ");
-        String nombreLibroCategoria = teclado.nextLine();
-        for (Libro libro: biblioteca.getLibros()){
-            if (libro.getCategoria().equals(nombreLibroCategoria)){
-                System.out.println(libro);
+        try {
+            System.out.println("Ingrese el nombre por categoria que desea buscar: ");
+            String nombreLibroCategoria = teclado.nextLine();
+            for (Libro libro : biblioteca.getLibros()) {
+                if (libro.getCategoria().equals(nombreLibroCategoria)) {
+                    System.out.println(libro);
+                }
             }
+        }catch (Exception e){
+            System.out.println("Ocurrió un error al buscar libros: " + e.getMessage());
         }
     }
 
     public void buscarLibroPorMejorValoracion(Biblioteca biblioteca){
-        System.out.println("Ingrese valoracion de libro: (Mejor)");
-        int mejorValoracionLibro = teclado.nextInt();
-        for (Libro libro : biblioteca.getLibros()){
-            //colocar logica
+        try {
+            System.out.println("Ingrese valoracion minima de libros: (rango 1-10)");
+            double mejorValoracionLibro = teclado.nextInt();
+            for (Libro libro : biblioteca.getLibros()) {
+                if (libro.tieneMejorValoracion(mejorValoracionLibro)) ;
+                System.out.println(libro);
             }
+        }catch (Exception e){
+            System.out.println("Ocurrió un error al buscar libros: " + e.getMessage());
         }
+    }
 
 
 
-    public void buscarLibroPorPeorValoracion(){
+    public void buscarLibroPorPeorValoracion(Biblioteca biblioteca){
+        try {
+            System.out.println("Ingrese valoracion maxima de libro: (rango 1-10)");
+            double poerValoracion = teclado.nextDouble();
+            for (Libro libro : biblioteca.getLibros()) {
+                if (libro.tienePeorValoracion(poerValoracion)) {
+                    System.out.println(libro);
+                }
+            }
+        }catch (Exception e){
+            System.out.println("Ocurrió un error al buscar libros: " + e.getMessage());
+        }
 
     }
 
+    public void buscarLibroPorValoracion(Biblioteca biblioteca){
+        try {
+            System.out.println("Ingrese valoración del libro: (rango 1-10)");
+            double valoracion = teclado.nextDouble();
+            for (Libro libro: biblioteca.getLibros()) {
+                if (libro.getCalificaciones().contains((int) valoracion)) {
+                    System.out.println(libro);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Ocurrió un error al buscar libros: " + e.getMessage());
+        }
+    }
+
+
+
     public void buscarLibroPorMasLLevado(){
-
-
+        //no se
     }
 
 
@@ -118,21 +162,26 @@ public class Usuario {
 
     }
     public void devolverLibro(Biblioteca biblioteca){
-        System.out.println("Ingrese el nombre del libro");
-        String nombreLibro = teclado.nextLine();
-        for (Libro libro: librosReservados){
-            if (libro.getTitulo().equals(nombreLibro)){
-                for (Libro libroBiblioteca: biblioteca.getLibros()){
-                    if (libroBiblioteca.getTitulo().equals(nombreLibro)){
-                        libroBiblioteca.setEjemplaresDisponibles(libro.getEjemplaresDisponibles()+1);
-                        librosReservados.remove(libro);
+        try {
+            System.out.println("Ingrese el nombre del libro");
+            String nombreLibro = teclado.nextLine();
+            for (Libro libro: librosReservados){
+                if (libro.getTitulo().equals(nombreLibro)){
+                    for (Libro libroBiblioteca: biblioteca.getLibros()){
+                        if (libroBiblioteca.getTitulo().equals(nombreLibro)){
+                            libroBiblioteca.setEjemplaresDisponibles(libro.getEjemplaresDisponibles()+1);
+                            librosReservados.remove(libro);
+                            return;
+                        }
                     }
                 }
             }
+            System.out.println("El libro ingresado no está reservado o no se encuentra en la biblioteca.");
+        } catch (Exception e) {
+            System.out.println("Ocurrió un error al devolver el libro: " + e.getMessage());
         }
-
-
     }
+
     public void verHistorialDePrestamos(Biblioteca biblioteca){
         historialPrestamos.forEach(System.out::println);
     }
@@ -140,7 +189,7 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Nombre= " + nombre+ " | Tipo= " + tipo + " | Contraseña= " + contraseña;
+        return "Nombre= " + nombre+ " | Tipo= " + tipo + " | ContraseÃ±a= " + contraseña;
     }
 
     public String getNombre() {

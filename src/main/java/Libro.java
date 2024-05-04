@@ -1,4 +1,5 @@
-import java.util.ArrayList;
+package org.example;
+
 import java.util.List;
 
 public class Libro {
@@ -25,18 +26,6 @@ public class Libro {
         this.comentarios = comentarios;
     }
 
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public String getAutor() {
-        return autor;
-    }
-
-    public String getCategoria() {
-        return categoria;
-    }
-
     public boolean tieneMejorValoracion(double valoracionMinima) {
         for (Integer calificacion : calificaciones) {
             if (calificacion >= valoracionMinima) {
@@ -55,6 +44,18 @@ public class Libro {
         return false;
     }
 
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public String getAutor() {
+        return autor;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
 
 
 
